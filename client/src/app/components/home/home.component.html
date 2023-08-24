@@ -1,0 +1,310 @@
+<div class="main-container">
+    <div class="home-container" id="home">
+        <div class="body-container">
+            <div class="container text-light" id="banner">
+                <h1 style="color:rgb(9, 9, 11)">Have a safe trip</h1>
+                <p style="color:rgb(12, 12, 15)">Select your destination where you want to go.</p>
+                <div class="d-flex align-items-center mb-2" style="gap: 10px;">
+                    <input type="checkbox" class="checkbox" (change)="onRoundTripChange($event)"> <label style="font-size: 20px;color:rgb(15, 15, 19); margin-top: 10px; font-weight: bold;">Round Trip</label>
+                  </div>
+                  
+                <div class="input-container mb-4">
+                    <div class="input-field-container">
+                      <label for="departure">Departure</label>
+                      <select name="from" id="from" class="input-field" [(ngModel)]="selectedFrom">
+                        <option value="" selected disabled>Departure City</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Bengaluru">Bengaluru</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Delhi">Delhi</option>
+                        <!-- Add more options as needed -->
+                      </select>
+                    </div>
+                    <div class="input-field-container">
+                      <label for="destination">Destination</label>
+                      <select name="to" id="to" class="input-field" [(ngModel)]="selectedTo">
+                        <option value="" selected disabled>Destination City</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Bengalore">Bengalore</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Delhi">Delhi</option>
+                        <!-- Add more options as needed -->
+                      </select>
+                    </div>
+                    <div class="input-field-container">
+                      <label for="journey">Journey Date</label>
+                      <input type="date" class="input-field" [(ngModel)]="selectedDate" (change)="checkSelectedDate()">
+                    </div>
+                    <div class="input-field-container" *ngIf="roundTrip">
+                      <label for="return">Return Date</label>
+                      <input type="date" class="input-field" [(ngModel)]="returnDate" (change)="checkReturnDate()">
+                    </div>
+                    <div class="button-container">
+                        <label for=""></label>
+                        <button class="button" (click)="search()" [disabled]="!isDestinationFormValid()">Search</button>
+                    </div>
+                  </div>
+                  
+                <p class="error-message text-danger" style="font-weight: bold; font-size: 28px;" *ngIf="error">{{ error }}</p>
+                <p *ngIf="isSame" class="text-danger" style="font-weight: bold; font-size: 28px;">Departure and
+                    destination shouldn't be same</p>
+                <div class="text-center" *ngIf="isLoading" style="margin-top: 150px;">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div class="row mt-4" *ngIf="flights.length !== 0 && !isLoading">
+                    <h1>Available Flights</h1>
+                    <div class="col-md-12" *ngFor="let flight of flights">
+                        <div class="card mb-4 shadow">
+                            <div class="card-body d-flex align-items-center justify-content-between"
+                                style="width: 100%; overflow: auto;gap: 10px;">
+                                <div>
+                                    <h5 class="card-title">{{ flight.airline }}</h5>
+                                    <p class="card-text">Flight Number: {{ flight.flightNumber }}</p>
+                                </div>
+                                <div>
+                                    <p class="card-text">Origin: {{ flight.origin }}</p>
+                                    <p class="card-text" style=" color: #9c9c9c;">Departure Time: {{
+                                        flight.departureTime }}</p>
+                                </div>
+                                <div>
+                                    <p class="card-text">Destination: {{ flight.destination }}</p>
+                                    <p class="card-text" style="color: #9c9c9c;">Arrival Time: {{ flight.arrivalTime }}</p>
+                                </div>
+                                <div>
+                                    <p class="card-text">Price: {{ flight.price }}</p>
+                                    <p class="card-text" style="color: #9c9c9c;">Total Seats: {{
+                                        flight.seatsAvailable  }}</p>
+                                </div>
+                                <button class="button" (click)="openModal(flight,flight._id)">BOOK</button>
+                                <ng-template #content let-modal>
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Select Seats and Fill Details</h4>
+                                        <button type="button" class="close" aria-label="Close"
+                                            (click)="modal.dismiss()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Seat selection and details form -->
+                                        <!-- ... -->
+                                        <!-- Seat selection grid -->
+                                        <div class="seat-grid">
+                                            <div class="row d-flex" *ngFor="let row of rows">
+                                                <button class="btn seat d-flex" *ngFor="let seat of row.seats"
+                                                    [ngClass]="{
+                                                     'selected': selectedSeats.includes(seat),
+                                                     'green-bg': selectedSeats.includes(seat),
+                                                     'bg-secondary': bookedSeats.includes(seat),
+                                                     'disabled': bookedSeats.includes(seat)
+                                                   }" (click)="selectSeat(seat, flight.price)">
+                                                    {{ seat }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Selected seats display -->
+                                        <div class="selected-seats">
+                                            <p>Selected Seats: {{ selectedSeats.join(', ') }}</p>
+                                            <p>Total Price: {{totalPrice}} RS</p>
+                                        </div>
+                                        <div class="form-container">
+                                            <div *ngFor="let seat of selectedSeats; let i = index">
+                                                <div class="card p-2">
+                                                    <h4>{{ seat }}</h4>
+                                                    <input type="text" placeholder="Enter Passenger name" class="p-2"
+                                                        (input)="updatePassengerName(i, $event)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label for="payment" class="mt-2 mb-2">Payment Method</label>
+                                        <select name="method" id="payment" class="input-field"
+                                            [(ngModel)]="selectedMethod">
+                                            <option value="" selected disabled>Select Payment Method</option>
+                                            <option value="creditCard">Credit Cart</option>
+                                            <option value="debitCard">Debit Card</option>
+                                            <!-- Add more options as needed -->
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            (click)="modal.dismiss()">Close</button>
+                                        <button type="button" class="btn btn-primary" (click)="confirmBooking()"
+                                            [disabled]="selectedSeats.length === 0 || passengers.length !== selectedSeats.length">Confirm
+                                            Booking</button>
+                                    </div>
+
+
+                                </ng-template>
+                                <!-- Payment Modal -->
+                                <ng-template #payment let-modal *ngIf="selectedMethod === 'creditCard'">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Payment Details</h5>
+                                                <button type="button" class="close" aria-label="Close"
+                                                    (click)="modal.dismiss()">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Payment content goes here -->
+                                                <p>Please enter your credit card details:</p>
+                                                <!-- Credit card input fields -->
+                                                <input type="text" placeholder="Card Number" [(ngModel)]="cardNumber"
+                                                    class="form-control mb-2">
+                                                <input type="text" placeholder="Expiration Date"
+                                                    [(ngModel)]="expirationDate" class="form-control mb-2">
+                                                <input type="text" placeholder="CVV" [(ngModel)]="cvv"
+                                                    class="form-control mb-2">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    (click)="modal.dismiss()">Close</button>
+                                                <button type="button" class="btn btn-primary"
+                                                    (click)="onPayment()" routerLink="/"
+                                                    [disabled]="!isPaymentFormValid()">Pay Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+
+                                <ng-template #payment let-modal *ngIf="selectedMethod === 'debitCard'">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Payment Details</h5>
+                                                <button type="button" class="close" aria-label="Close"
+                                                    (click)="modal.dismiss()">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Payment content goes here -->
+                                                <p>Please enter your debit card details:</p>
+                                                <!-- Debit card input fields -->
+                                                <input type="text" placeholder="Card Number" [(ngModel)]="cardNumber"
+                                                    class="form-control mb-2">
+                                                <input type="text" placeholder="Expiration Date"
+                                                    [(ngModel)]="expirationDate" class="form-control mb-2">
+                                                <input type="text" placeholder="CVV" [(ngModel)]="cvv"
+                                                    class="form-control mb-2">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    (click)="modal.dismiss()">Close</button>
+                                                <button type="button" class="btn btn-primary"
+                                                    (click)="onPayment()" routerLink="/"
+                                                    [disabled]="!isPaymentFormValid()">Pay Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="about" class="section-about  p-4">
+        <div class="container">
+            <h2 class="section-title">About Us</h2>
+            <p class="section-description">
+                Welcome to our flight booking app! We are happy and dedicated to providing you with a seamless travel experience.
+                Our app offers a wide range of flights to choose from, competitive prices, and convenient booking options.
+            </p>
+            <p class="section-description">
+                Our team of travel experts is committed to ensuring that your journey is comfortable and stress-free. We
+                provide real-time flight status updates, secure payment integration, and reliable customer support to
+                assist you throughout your travel journey.
+            </p>
+            <p class="section-description">
+                 We look forward to serving you and making your travel dreams a reality!
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section text-dark p-4">
+        <div class="container">
+            <h2 class="section-heading">Contact Us</h2>
+            <p class="section-subheading">Have any questions? Feel free to reach out to us.</p>
+            <div class="row">
+                <div class="col-lg-6">
+                    <form id="contactForm" name="sentMessage" novalidate>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your Name *" id="name" required
+                                data-validation-required-message="Please enter your name." />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Your Email *" id="email" required
+                                data-validation-required-message="Please enter your email address." />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Your Message *" id="message" required
+                                data-validation-required-message="Please enter a message."></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="text-center">
+                            <div id="success"></div>
+                            <button type="submit" class="btn btn-primary btn-xl text-uppercase">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <div class="contact-info">
+                        <h3>Contact Information</h3>
+                        <p><i class="fa fa-map-marker"></i> 2-13, Hyderabad, India</p>
+                        <p><i class="fa fa-phone"></i> +91 7649324789</p>
+                        <p><i class="fa fa-envelope"></i> service@flights.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer p-4 text-dark" style="height: 30vh;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="footer-links">
+                        <ul class="list-unstyled">
+                            <li><a href="#about">About Us</a></li>
+                            <li><a href="#contact">Contact Us</a></li>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="#">Terms and Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="footer-social" style="gap: 20px;">
+                        <ul class="list-inline text-right">
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="footer-credits text-center">
+                        <p>&copy; 2023 FlightBookingApp. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+</div>

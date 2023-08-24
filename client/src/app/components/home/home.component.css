@@ -1,0 +1,178 @@
+.home-container {
+  height: 100vh;
+  background-color: rgb(118, 168, 211);
+  background-image: url('https://www.pngkey.com/png/detail/6-66617_plane-png-clipart-hd-image-of-airplane.png');
+  background-size: cover;
+  overflow: auto;
+}
+
+#banner {
+  margin-top: 200px;
+}
+
+@media screen and (max-width:768px) {
+  #banner {
+    margin-top: 60px;
+  }
+}
+
+.body-container {
+  height: 90vh;
+  display: flex;
+  color:white;
+  justify-content: center;
+  width: 100%;
+  overflow: auto;
+}
+
+.input-container {
+  width: fit-content;
+  display: flex;
+  background-color:rgb(56, 69, 156);
+  color:rgb(11, 7, 11);
+  padding: 10px;
+  min-height: 60px;
+  gap: 10px;
+}
+
+@media screen and (max-width:975px) {
+  .input-container {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.input-field {
+  height: 100%;
+  width: 240px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+@media screen and (max-width:975px) {
+  .input-field {
+    width: 100%;
+  }
+}
+
+.section-about {
+  min-height: 50vh;
+}
+
+.contact-section {
+  min-height: 50vh;
+  background-color: rgb(141, 189, 222);
+}
+
+.main-container {
+  height: 90vh;
+  overflow: auto;
+}
+
+.button {
+  background-color: rgb(250, 247, 250);
+  color:black;
+  width: 120px;
+  height: 44px;
+  border: 0;
+  outline: none;
+  border-radius: 2px;
+}
+
+/* .card{
+    box-shadow: 0 10px 25px #3a3a3a;
+} */
+
+footer {
+  background-color: #cecece;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-column {
+  flex: 0 0 33.33%;
+  margin-bottom: 20px;
+}
+
+.footer-column h4 {
+  margin-bottom: 10px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 8px;
+}
+
+.footer-column ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  color: #9f3b3b;
+}
+
+
+.seat {
+  width: 60px;
+  height: 30px;
+  border: 1px solid grey;
+}
+
+.seat:hover {
+  background-color: #ffb22e;
+  transition: 0.3s ease-in;
+  cursor: pointer;
+}
+
+.green-bg {
+  background-color: green;
+}
+
+.form-container {
+  display: flex;
+  overflow: auto;
+}
+
+.input-field-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.button-container {
+  margin-top: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  /* justify-content: end; */
+}
+
+.list-inline-item{
+  font-size: 30px;
+  margin: 10px;
+}
+
+.checkbox{
+  height: 20px;
+  width: 20px;
+  border-radius: 4px;
+}

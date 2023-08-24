@@ -1,0 +1,47 @@
+<div class="text-center" *ngIf="isLoading" style="margin-top: 150px;">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="dashboard-container" *ngIf="!isLoading">
+    <div class="row">
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Bookings</h5>
+                    <p class="card-text">{{ bookings.length }}</p>
+                    <button class="btn btn-primary" routerLink="/admin/bookings">View Bookings</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Flights</h5>
+                    <p class="card-text">{{ flights.length }}</p>
+                    <button class="btn btn-primary" routerLink="/admin/flights">View Flights</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Users</h5>
+                    <p class="card-text">{{ users.length }}</p>
+                    <button class="btn btn-primary" routerLink="/admin/users">View Users</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Add Flight</h5>
+                    <button class="btn btn-primary" routerLink="/admin/add-flight">Add flight</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+.bookings-container{
+    list-style-type: none;
+    padding: 40px;
+    height: 90vh;
+    overflow: auto;
+}

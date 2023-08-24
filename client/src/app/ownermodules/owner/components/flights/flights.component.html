@@ -1,0 +1,25 @@
+<ul class="flights-container container">
+    <h1>Flights</h1>
+    <div class="text-center" *ngIf="isLoading" style="margin-top: 150px;">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <li *ngFor="let flight of flights">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">{{ flight.airline }}</h5>
+          <p class="card-text">Flight number: {{ flight.flightNumber }}</p>
+          <p class="card-text">Departure: {{ flight.origin }}</p>
+          <p class="card-text">Destination: {{ flight.destination }}</p>
+          <!-- <label for="revenue">Check Revenue: {{0}}</label>
+          <div class="d-flex">
+            <input type="date" id="revenue" class="form-control" [(ngModel)]="selectedDate" (change)="checkSelectedDate()">
+            <button class="btn btn-primary" (click)="onCheckRevenue(flight._id)"> Check</button>
+          </div>
+          <p class="error-message text-danger" style="font-weight: bold; font-size: 28px;" *ngIf="error">{{ error }}</p> -->
+        </div>
+      </div>
+    </li>
+  </ul>
+   
