@@ -1,0 +1,43 @@
+<ul class="bookings-container container pt-4">
+  <h1>Bookings</h1>
+  <div class="text-center" *ngIf="isLoading" style="margin-top: 150px;">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <li *ngFor="let booking of bookings" class="card mb-4 p-4">
+    <div>
+      <strong>Booking ID:</strong> {{ booking._id }}
+    </div>
+    <div>
+      <strong>User:</strong> {{ booking.user }}
+    </div>
+    <div>
+      <strong>Flight Number:</strong> {{ booking.flight.flightNumber }}
+    </div>
+    <div>
+      <strong>Passengers:</strong>
+      <ul>
+        <li *ngFor="let passenger of booking.passengers">{{ passenger }}</li>
+      </ul>
+    </div>
+    <div>
+      <strong>Total Price:</strong> {{ booking.totalPrice }}
+    </div>
+    <div>
+      <strong>Date:</strong> {{ booking.date | date }}
+    </div>
+    <div>
+      <strong>Journey Date:</strong> {{ booking.journeyDate | date }}
+    </div>
+    <div>
+      <strong>Seat Numbers:</strong>
+      <ul>
+        <li *ngFor="let seat of booking.seatNumbers">{{ seat.seat }}</li>
+      </ul>
+    </div>
+    <div>
+      <strong>Payment Method:</strong> {{ booking.paymentMethod }}
+    </div>
+  </li>
+</ul>

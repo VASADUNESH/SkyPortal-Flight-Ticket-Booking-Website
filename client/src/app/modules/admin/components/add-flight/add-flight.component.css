@@ -1,0 +1,33 @@
+.add-flight{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border: 1px solid rgb(196, 195, 195);
+    padding: 40px;
+}
+@media screen and (max-width:768px) {
+    .add-flight{
+        flex-direction: column;
+        border: 0;
+        padding: 0;
+    }
+}
+
+.form-container{
+    width: 36%;
+}
+
+@media screen and (max-width:768px) {
+    .form-container{
+        width: 100%;
+    }
+}
+
+.image{
+    width: 50%;
+}
+@media screen and (max-width:768px) {
+    .image{
+        width: 100%;
+    }
+}

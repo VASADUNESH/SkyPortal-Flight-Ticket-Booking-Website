@@ -1,0 +1,6 @@
+.body-container{
+    width: 100%;
+    padding: 20px;
+    height: 90vh;
+    overflow: auto;
+}
