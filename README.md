@@ -1,5 +1,8 @@
 SkyPortal - Flight Ticket Booking System ✈️
 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/fb8b034f-c39a-43b0-85dc-ec4f3982d73e" />
+
+
 SkyPortal is a high-performance, full-stack flight management application. It provides a seamless experience for searching flights, managing seat allocations, and handling secure bookings. Built with the MEAN stack (MongoDB, Express, Angular, Node.js), it utilizes JWT for secure authentication and Swagger for comprehensive API testing.
 
 🚀 Project Overview
